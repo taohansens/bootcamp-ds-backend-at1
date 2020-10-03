@@ -1,4 +1,4 @@
-package com.dsbootacamptaoh.clientesbackend.resources.exceptions;
+package com.dsbootacamptaoh.clientesbackend.services.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
