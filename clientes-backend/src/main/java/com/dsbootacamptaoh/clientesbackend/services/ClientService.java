@@ -3,9 +3,6 @@ package com.dsbootacamptaoh.clientesbackend.services;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +17,7 @@ public class ClientService {
 
 	@Autowired
 	private ClientRepository repository;
-	
+
 	@Transactional(readOnly = true)
 	public List<ClientDTO> findAll() {
 		List<Client> list = repository.findAll();
@@ -33,8 +30,22 @@ public class ClientService {
 		Client entity = obj.orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado."));
 		return new ClientDTO(entity);
 	}
-	
 
+	@Transactional
+	public ClientDTO insert(ClientDTO dto) {
+		Client entity = new Client();
+		copyDtoToEntity(dto, entity);
+		entity = repository.save(entity);
+		return new ClientDTO(entity);
+	}
 
-		
+	private void copyDtoToEntity(ClientDTO dto, Client entity) {
+		entity.setName(dto.getName());
+		entity.setCpf(dto.getCpf());
+		entity.setIncome(dto.getIncome());
+		entity.setBirthDate(dto.getBirthDate());
+		entity.setChildren(dto.getChildren());
+
+	}
+
 }
