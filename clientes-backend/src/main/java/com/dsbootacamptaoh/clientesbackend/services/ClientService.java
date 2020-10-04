@@ -1,9 +1,6 @@
 package com.dsbootacamptaoh.clientesbackend.services;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +25,8 @@ public class ClientService {
 
 	@Transactional(readOnly = true)
 	public Page<ClientDTO> findAllPaged(PageRequest pageRequest) {
-	Page<Client> list = repository.findAll(pageRequest);
-	return list.map(x -> new ClientDTO(x));
+		Page<Client> list = repository.findAll(pageRequest);
+		return list.map(x -> new ClientDTO(x));
 	}
 
 	@Transactional(readOnly = true)
@@ -64,15 +61,14 @@ public class ClientService {
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
-		}catch (EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			String error = String.format("Erro. ID %s não encontrado", id);
 			throw new ResourceNotFoundException(error);
-		}catch (DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
 		}
 	}
-	
-	
+
 	private void copyDtoToEntity(ClientDTO dto, Client entity) {
 		entity.setName(dto.getName());
 		entity.setCpf(dto.getCpf());
@@ -81,6 +77,5 @@ public class ClientService {
 		entity.setChildren(dto.getChildren());
 
 	}
-
 
 }
